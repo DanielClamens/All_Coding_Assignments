@@ -1,0 +1,160 @@
+#include <stdio.h>
+#include <stdlib.h>
+ 
+// Define the character size
+#define CHAR_SIZE 26
+ 
+// Data structure to store a Trie node
+struct Trie
+{
+    int MangosFed;
+    struct Trie* character[CHAR_SIZE];
+};
+ 
+// Function that returns a new Trie node
+struct Trie* getNewTrieNode()
+{
+    struct Trie* node = (struct Trie*)malloc(sizeof(struct Trie));
+    node->MangosFed = 0;
+ 
+    for (int i = 0; i < CHAR_SIZE; i++) { //Loop 26 times for alphabet
+        node->character[i] = NULL;
+    }
+ 
+    return node;
+}
+ 
+// function to insert a string into the Trie
+void insert(struct Trie *head, char* str, int Mangos)
+{
+    // start from the root node
+    struct Trie* curr = head;
+    while (*str)
+    {
+        // create a new node if the path doesn't exist
+        if (curr->character[*str - 'A'] == NULL) {
+            curr->character[*str - 'A'] = getNewTrieNode();
+            curr->MangosFed = 0;
+        }
+ 
+        // go to the next node
+        curr = curr->character[*str - 'A'];
+ 
+        //go to the next character
+        str++;
+    }
+    if(curr->MangosFed == 0){
+       curr->MangosFed = Mangos; 
+    }
+    else{
+        curr->MangosFed += Mangos;
+    }
+    
+}
+
+int MangoCount(struct Trie* head, char* str){ //I KNOW IT LOOKS CURSED, I COULDN'T FIGURE OUT HOW TO GET THE RECURSION TO WORK WITH ONLY A FEW HOURS LEFT SO I HARDCODED IT
+    if (head == NULL) {
+        return 0;
+    }
+ 
+    struct Trie* curr = head;
+    while (*str)
+    {
+        // go to the next node
+        curr = curr->character[*str - 'A'];
+ 
+        // if the string is invalid (reached end of a path in the Trie)
+        if (curr == NULL) {
+            return 0;
+        }
+ 
+        // move to the next character
+        str++;
+    }
+   int TotalMango = 0;
+   TotalMango += curr->MangosFed;
+   for (int i = 0; i < CHAR_SIZE; i++) {
+       if(curr->character[i] != NULL){
+           TotalMango += curr->character[i]->MangosFed; //REPREHENSIBLE BEHAVIOR
+           for(int j = 0; j < CHAR_SIZE; j++){
+           if(curr->character[i]->character[j] != NULL){
+               TotalMango += curr->character[i]->character[j]->MangosFed;
+                for(int k = 0; k < CHAR_SIZE; k++){
+                    if(curr->character[i]->character[j]->character[k] != NULL){ //Hard Coding loops to check the 26 characters below each iteration.
+                        TotalMango += curr->character[i]->character[j]->character[k]->MangosFed;
+                        for(int l = 0; l < CHAR_SIZE; l++){
+                            if(curr->character[i]->character[j]->character[k]->character[l] != NULL){
+                                TotalMango += curr->character[i]->character[j]->character[k]->character[l]->MangosFed;
+                                for(int m = 0; m < CHAR_SIZE; m++){
+                                    if(curr->character[i]->character[j]->character[k]->character[l]->character[m] != NULL){
+                                    TotalMango += curr->character[i]->character[j]->character[k]->character[l]->character[m]->MangosFed;
+                                    for(int n = 0; n < CHAR_SIZE; n++){
+                                        if(curr->character[i]->character[j]->character[k]->character[l]->character[m]->character[n] != NULL){
+                                        TotalMango += curr->character[i]->character[j]->character[k]->character[l]->character[m]->character[n]->MangosFed;
+                                        }
+                                    }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+           }
+       }
+       }
+   }
+       return TotalMango;
+}
+
+int nameswap (struct Trie* head, char* str){
+    // start from the root node
+    struct Trie* curr = head;
+    while (*str)
+    {
+        if (curr->character[*str - 'A'] == NULL) { //if name does not exist, return.
+            return 0;
+        }
+ 
+        // go to the next node
+        curr = curr->character[*str - 'A'];
+ 
+        // move to the next character
+        str++;
+    }
+    int tempmango = curr->MangosFed; //Moving the current number of Mangos for prechanged name to a temp value
+    curr->MangosFed = 0; //setting the current value to 0 but not removing the node to not break the chain.
+    return tempmango; //Return the old monkey name value to add it into the newly created new name
+}
+ 
+ 
+int main(){
+    struct Trie* head = getNewTrieNode(); //Initialize Trie
+    int NumofOrang, NumofEvents; //Initialize variables
+    
+    scanf("%d %d", &NumofOrang, &NumofEvents); //Scan initial variables
+    
+    for (int i = 0; i < NumofEvents; i++){ //Loop for number of events
+        int Choice;
+        char OrangName[20+1]; //Initialization of variables of type int and char strings
+        char newName[20+1];
+        int MangosFed;
+        int temp;
+        scanf("%d", &Choice); //Scan and initialization of switch statement to allow for the 3 choices.
+        
+        switch(Choice){
+            case 1:
+            scanf("%s %d", OrangName, &MangosFed); //Scan required info and call insert function to create and insert a new node into Trie
+            insert(head, OrangName, MangosFed);
+            break;
+            case 2:
+            scanf("%s %s", OrangName, newName); //Call nameswap function and 0 out the old name while creating a new node for the new name and passing over the original value.
+            temp = nameswap(head, OrangName);
+            insert(head, newName, temp);
+            break;
+            case 3:
+            scanf("%s", OrangName);
+            printf("%d\n", MangoCount(head, OrangName)); //Call the MangoCount function and print out the results
+            break;
+    }
+    }
+}
