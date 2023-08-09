@@ -1,0 +1,56 @@
+#include<stdio.h>
+
+int sum(int stack[],int Position);
+int main()
+{
+    //Lines 15 - 24 initialization of main variables as well as scanning in the first input to determine size for while loop
+    int NumofExhibits;
+    scanf("%d", &NumofExhibits);
+
+    int EntranceID;
+    int NumofMonkeys;
+    int Stack[NumofExhibits]; //Keeps the exhibit values in order from 0 -> n
+    int Park[NumofExhibits]; //Keeps the total value of monkeys seen from 0 -> park location
+
+    int i = 0;
+    int Position = 0;
+    while (i < ((2 * NumofExhibits)-1)) //While loop  2x NumofExhibits - 1 # of times(Due to the requirement of going back to the front of the park)
+    {
+        scanf("%d",&EntranceID); //Scans Exhibit Entrance ID #
+        if(EntranceID != -1) //If ID is valid, then it will scan NumofMonkeys and move that data to the stack array and the sum of the monkeys to the park array's position
+        {
+            scanf("%d", &NumofMonkeys);
+            Stack[Position] = NumofMonkeys;
+            Park[EntranceID-1] = sum(Stack,Position);
+            Position++;
+
+        }
+        else{
+            Position--; //Lines 32 and 37 set the position of the Exhibit to be processed in order to account for cases where you walk by an exhibit without seeing the monkeys.
+        }
+        i++;
+    }
+
+    int NumofVisitors;  //Declare and scan # of visitors input
+    scanf("%d", &NumofVisitors);
+
+    for (int i = 0; i < NumofVisitors; i++) //Loop to scan in the locations the visitors would like to travel to
+    {
+        scanf("%d", &Stack[i]); //Scans in the requested locations into the stack array
+
+    }
+    printf("\n");
+    for (int i = 0; i < NumofVisitors; i++) //Loop to print out the # of monkeys at each given location
+    {
+        printf("%d\n", Park[Stack[i]-1]); //Prints the # of monkeys at the given location within the park array.
+    }
+}
+
+int sum(int stack[],int Position){ //Method to get the sum of the stack array
+    int sum = 0;
+    for (int i = 0; i <= Position; i++)
+    {
+        sum += stack[i]; //Adds up the values from the 0 position of the park to the current method called location
+    }
+    return sum;
+}
