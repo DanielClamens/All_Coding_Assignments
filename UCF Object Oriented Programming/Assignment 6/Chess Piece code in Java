@@ -1,0 +1,30 @@
+//Assignment 6, Object Oriented Programming, Daniel Clamens, 11/07/2022
+
+import java.util.ArrayList;
+
+public abstract class ChessPiece {
+	
+public static ArrayList<ChessPiece> masterList = new ArrayList<ChessPiece>();
+private String color;
+
+public ChessPiece(String color) {
+	this.color = color;
+	masterList.add(this);
+}
+
+public String getColor() {
+	return color;
+}
+
+public static ChessPiece InUse(int Row, int Column) {
+	for (ChessPiece piece : masterList) {
+		if (piece.getRow() == Row && piece.getColumn() == Column) {
+			return piece;
+}
+}
+	return null;
+}
+public abstract int getRow();
+public abstract int getColumn();
+public abstract boolean isValidMove(int Row, int Column);
+}
