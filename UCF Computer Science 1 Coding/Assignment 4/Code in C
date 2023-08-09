@@ -1,0 +1,140 @@
+#include <stdio.h> 
+#include <stdlib.h>
+
+long long int TotalProgramTime = 0;
+long long int LeftValue = 0, RightValue = 0;
+int BonusTime = 0;
+int ProgramTime = 0;
+int ArrivalTime = 0;
+int ArrivalTimeTotal = 0;
+
+typedef struct node {
+    long long int size, arrive, process;
+    struct node * next;
+}node;
+
+typedef struct queue {
+    struct node * front;
+    struct node * back;
+}queue;
+
+queue * front = NULL;
+queue * back = NULL;
+
+node * createNode(long long int size, long long int arrive, long long int process){
+    
+    node * newNode = (struct node * ) malloc(sizeof(node));
+    newNode->arrive = arrive;
+    newNode->size = size;
+    newNode->process = process;
+    newNode->next = NULL;
+    
+    return newNode;
+}
+
+// Enqueue() operation on a queue
+void enqueue(queue *q, node *node) {
+    if ((q->front == NULL) && (q->back == NULL)) {
+       q -> front = q->back = node;
+    } else {
+        q-> back -> next = node;
+        q->back = node;
+    }
+}
+
+// Dequeue() operation on a queue
+void dequeue(queue *q) {
+    if (q->front == NULL) {
+        return;
+    } else {
+        q->front = q-> front -> next;
+}
+}
+
+void sortqueue(queue *q){
+    
+    node* current = q->front, *index = NULL;
+    int temp;
+    
+    if(q->front == NULL){
+        return;
+    }
+    else{
+        while(current != NULL){
+            index = current->next;
+        while(index != NULL){
+            if(current->arrive > index->arrive){
+                temp = current->arrive;
+                current->arrive = index->arrive;
+                index->arrive = temp;
+            }
+            index = index->next;
+        }
+        current = current->next;
+    }
+    }
+}
+
+    void dequeueMain(queue* Main, queue* Left, queue* Right){
+        
+            if(LeftValue <= RightValue){   //CORRECT PIECE OF CODE
+            node * temporary = Main->front;
+            dequeue(Main);
+            temporary->next = NULL;
+            enqueue(Left, temporary);
+            LeftValue += Left->back->size;
+        }
+        else{
+            node * temporary = Main->front;
+            dequeue(Main);
+            temporary->next = NULL;
+            enqueue(Right, temporary);
+            RightValue += Right->back->size;
+            
+        }
+} 
+            
+            void dequeueEnd(queue *q){
+            node * temp;
+            temp = q->front;
+            while(temp != NULL){
+                if (temp = q->front){
+                    ProgramTime = ((temp->process * temp->size) + BonusTime);
+                    BonusTime = (temp->process + temp->arrive);
+                    ArrivalTimeTotal += ArrivalTime;
+                    ArrivalTime = temp->arrive;
+                    TotalProgramTime += ProgramTime - ArrivalTime;
+                    
+                   
+                }
+                dequeue(q);
+                temp = temp->next;
+            }
+            BonusTime = 0;
+            ArrivalTime = 0;
+            }
+
+int main() {
+    struct queue* Main = (queue*)malloc(sizeof(queue));
+    struct queue* Left = (queue*)malloc(sizeof(queue));
+    struct queue* Right = (queue*)malloc(sizeof(queue));
+    
+  long long int size, arrive, process;
+  int NumOfGroups;
+    scanf("%d", &NumOfGroups);
+
+for (int i = 0; i < NumOfGroups; i++){
+    scanf("%lld %lld %lld", &size, &arrive, &process);
+    node * newNode = createNode(size, arrive, process);
+    enqueue(Main, newNode);
+}
+sortqueue(Main);
+
+while(Main->front != NULL){
+    dequeueMain(Main, Left, Right);
+}
+dequeueEnd(Left);
+dequeueEnd(Right);
+printf("\n%lld", TotalProgramTime + ArrivalTimeTotal);
+
+}
