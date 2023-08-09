@@ -1,0 +1,44 @@
+//Daniel Clamens, Object Oriented Programming, Assignment 7: Interfaces, 11/18/2022
+interface Sports{  // sports interface
+	void score_large();
+	void score_med();
+	void score_small();
+	int get_score();
+}
+
+class Football implements Sports{  // Football class
+	int Total = 0;
+	
+	public void score_large(){
+		Total += 7;
+	}
+	public void score_med(){
+		Total += 3;
+	}
+	public void score_small(){
+		Total += 1;
+	}
+	public int get_score(){
+		int Total2 = Total;
+		Total = 0;
+		return Total2;
+	}
+}
+class Basketball implements Sports{ // Basket ball class
+	int Total = 0;
+	
+	public void score_large(){
+		Total += 3;
+	}
+	public void score_med(){
+		Total += 2;
+	}
+	public void score_small(){
+		Total += 1;
+	}
+	public int get_score(){
+		int Total2 = Total;
+		Total = 0;
+		return Total2;
+	}
+}
