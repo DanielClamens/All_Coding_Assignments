@@ -1,0 +1,76 @@
+//Daniel Clamens, COP 3330, Due 09/05/22, Assignment 0: Welcome to OOP!
+
+
+import java.util.Scanner;
+public class Daytona {
+	
+	
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+			int x = 0;
+			int y = -1;
+			System.out.println("Welcome to Daytona Beach!");
+
+			while(x != y) {
+				int time4beach;
+				int DistanceThrown;
+				int DistanceToBasket = 349;
+				int activityChoice;
+				int NumberOfLaps;
+
+				System.out.println("What would you like to do?");
+
+				System.out.println("1. Drive on the Beach!");
+				System.out.println("2. Play Disc Golf!");
+				System.out.println("3. See the Race!");
+				System.out.println("4. Exit\n");
+				activityChoice = scan.nextInt();
+
+				switch(activityChoice) {
+				case 1:
+					System.out.println("What hour did you get to the beach? (24 Hour Format)");
+					time4beach = scan.nextInt();
+					if(time4beach > 8 && time4beach < 19) {
+						System.out.println("Enjoy the drive!\n\n");
+					} else if(time4beach <= 8 || time4beach >= 19) {
+						System.out.println("The beach is closed! Better luck next time!");
+					}
+					break;
+				case 2:
+				System.out.println("Welcome to the Disc Golf Park!\n");
+				System.out.println("There are 349 feet left before you reach the basket.");
+				
+	while (DistanceToBasket != 0) {
+	System.out.println("How far did you throw the disk? (ft)\n");
+	DistanceThrown = scan.nextInt();
+	DistanceToBasket = DistanceToBasket - DistanceThrown;
+	if (DistanceToBasket < 0){
+	DistanceToBasket = (DistanceToBasket * -1);
+	}
+	System.out.println("There are "+ DistanceToBasket +" feet left before you reach the basket.\n");
+
+	}
+	if (DistanceToBasket == 0){
+	System.out.println("You sunk it! Great job!\n\n");
+			}
+	break;
+
+	case 3 :
+	System.out.println("How many laps are left?\n");
+	NumberOfLaps = scan.nextInt();
+
+	for (int i = 0; i < NumberOfLaps; NumberOfLaps--){
+	System.out.println("There are "+ NumberOfLaps +" laps left.");
+		}
+	if (NumberOfLaps == 0){
+	System.out.println("Finished!\n");
+	}
+	break;
+
+	case 4 : 
+	System.out.println("Goodbye");
+	x = x-1;
+	}
+	}
+	}
+}
