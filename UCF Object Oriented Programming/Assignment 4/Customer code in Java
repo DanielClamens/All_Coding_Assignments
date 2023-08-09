@@ -1,0 +1,17 @@
+//Daniel Clamens, 10/21/22, Object Oriented Programming, Assignment 4: File I/O & Linked Lists
+
+class Customer{
+    private String name;
+    private boolean business;
+    
+    public Customer(String name, boolean business){
+        this.name = name;
+        this.business = business;
+    }
+    public String getName(){
+        return name;
+    }
+    public boolean getbusiness(){
+        return business;
+    }
+}
