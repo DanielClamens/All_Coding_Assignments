@@ -1,0 +1,38 @@
+//Assignment 6, Object Oriented Programming, Daniel Clamens, 11/07/2022
+
+public class Knight extends ChessPiece {
+ 
+private int Row;
+private int Column;
+ 
+public Knight(String color, int Row, int Column) {
+	super(color);
+	this.Row = Row;
+	this.Column = Column;
+}
+
+public int getRow() {
+	return Row;
+}
+ 
+public int getColumn() {
+	return Column;
+}
+ 
+public boolean isValidMove(int Row, int Column) {
+	ChessPiece Used = ChessPiece.InUse(Row, Column);
+	if (Used != null && Used.getColor().equals(getColor())) {
+		return false;
+}
+int[][] KnightMovement = {{-2, -1}, {-2, 1}, {2, -1}, {2, 1},{1, -2}, {1, 2}, {-1, -2}, {-1, 2}}; //L Shape
+	for (int[] direction : KnightMovement) {
+		int x = direction[0];
+		int y = direction[1];
+		
+		if (this.Row + x == Row && this.Column + y == Column) {
+			return true;
+}
+}
+	return false;
+}
+}
