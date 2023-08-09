@@ -1,0 +1,53 @@
+//Daniel Clamens, Assignment 2: Objects, Object Oriented Programming, Due Sept. 16, 2022
+
+public class Account {
+
+    private String AccountName;
+    private double Balance;
+    public double NewBalance;
+    private double InterestRate;
+
+    public Account(String Name, double Rate) {
+
+        AccountName = Name;
+        InterestRate = Rate;
+    }
+
+
+    public boolean deposit(double Amount) {
+
+        if (Amount <= 0)
+            return false;
+
+        else {
+            Balance += Amount;
+            return true;
+        }
+    }
+
+    public boolean withdraw(double Amount) {
+
+        if (Amount <= 0 || (Balance - Amount) < 0)
+            return false;
+
+        else {
+            Balance -= Amount;
+            return true;
+        }
+    }
+
+
+    public double getBalance() {
+        return Balance;
+    }
+
+
+    public String getName() {
+        return AccountName;
+    }
+    public void calcInterest(int months) {
+
+        double InterestPeriod = (InterestRate * (months / 12.0)) / 100;
+        Balance = (Balance * (1 + InterestPeriod)); //Infinite Money glitch!! This bank sucks!!
+    }
+}
