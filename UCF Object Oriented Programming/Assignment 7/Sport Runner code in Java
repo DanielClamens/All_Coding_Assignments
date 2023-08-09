@@ -1,0 +1,83 @@
+//Daniel Clamens, Object Oriented Programming, Assignment 7: Interfaces, 11/18/2022
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Scanner;
+import java.util.*;
+
+public class SportRunner{
+	
+	public static void main(String[] args) throws IOException {
+		
+	Scanner scan = new Scanner(System.in);
+	System.out.println("Enter a valid file name: ");
+	String file = scan.nextLine();
+	String st;
+	
+	    
+       BufferedReader br = new BufferedReader(new FileReader(file)); 
+       
+       
+       Football football = new Football();
+       Basketball basketball = new Basketball();
+       
+       int NumberofTeams = Integer.parseInt(br.readLine());
+       int score[] = new int[NumberofTeams];
+       
+       ArrayList<Integer> foot = new ArrayList<Integer>();
+       ArrayList<Integer> basket = new ArrayList<Integer>();
+       
+        for(int i = 0; i < NumberofTeams; i++){  
+        	
+        	st = br.readLine();
+        	if (st.equals("Basketball")){
+        		basket.add(i);
+        	}
+        	else {
+        		foot.add(i);
+        	}
+        } 
+        
+        int NumberofScores = Integer.parseInt(br.readLine());
+        for(int i = 0; i < NumberofScores; i++) {
+        	
+        String TeamScoreInput[] = br.readLine().split(" ");
+        int First = Integer.parseInt(TeamScoreInput[0]);
+		if(foot.contains(First)) {
+			if(TeamScoreInput[1].equals("l")) {
+				football.score_large();
+				score[First] += football.get_score();
+			}
+			else if(TeamScoreInput[1].equals("m")) {
+				football.score_med();
+				score[First] += football.get_score();
+			}
+			else {
+				football.score_small();
+				score[First] += football.get_score();
+			}
+		}
+		else{
+			if(TeamScoreInput[1].equals("l")) {
+				basketball.score_large();
+				score[First] += basketball.get_score();
+			}
+			else if(TeamScoreInput[1].equals("m")) {
+				basketball.score_med();
+				score[First] += basketball.get_score();
+			}
+			else {
+				basketball.score_small();
+				score[First] += basketball.get_score();
+			}
+		}
+	}
+        for(int i = 0; i < NumberofTeams; i++) {
+        	System.out.println("Team "+ (i+1) + "'s score is: " + score[i]);
+        }
+        
+        	scan.close();
+        	br.close();
+        	
+        }
+}
