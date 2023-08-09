@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <string.h>
+
+int ans = 2147483647;
+int max(int a,int b){
+    if(a <= b) 
+        return b;
+    else return a;
+}
+int min(int a,int b){
+    if(a <= b) 
+        return a;
+    else return b;
+}
+void swap(int *a, int *b){
+    int tmp = *a;
+    *a = *b;
+    *b = tmp;
+}
+
+void recursive(int AnimalPos[],int Position,int NumExhibits,int Noise[NumExhibits][NumExhibits]){
+    if(Position == NumExhibits){
+        int tmp = 0;
+        
+        for(int i = 0;i < NumExhibits; i++){
+            for(int j = max(0,i - 2); j <= min(NumExhibits -1, i + 2);j++){
+                tmp += Noise[AnimalPos[i]-1][AnimalPos[j]-1];
+            }
+        }
+        ans = min(ans, tmp);
+        return;
+    }
+    else{
+        for(int j = Position; j < NumExhibits;j++){
+            swap(&AnimalPos[j],&AnimalPos[Position]);
+            recursive(AnimalPos, Position+1, NumExhibits, Noise);
+            swap(&AnimalPos[j],&AnimalPos[Position]);
+        }
+    }
+}
+int main(){
+    int NumExhibits; 
+    scanf("%d",&NumExhibits);
+    int Noise[NumExhibits][NumExhibits];
+    for(int i = 0;i < NumExhibits;i++){
+        for(int j = 0; j < NumExhibits;j++){
+            scanf("%d",&Noise[i][j]);
+        }
+    }
+    int AnimalPos[NumExhibits];
+    int Position = 0;
+    for(int i = 1; i <= NumExhibits;i++){
+        AnimalPos[i-1] = i;
+    }
+    recursive(AnimalPos, 0, NumExhibits, Noise);
+    printf("%d",ans);
+}
