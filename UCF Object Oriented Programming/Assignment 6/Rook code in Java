@@ -1,0 +1,62 @@
+//Assignment 6, Object Oriented Programming, Daniel Clamens, 11/07/2022
+
+public class Rook extends ChessPiece {
+
+private int Row;
+private int Column;
+
+public Rook(String color, int Row, int Column) {
+	super(color);
+	this.Row = Row;
+	this.Column = Column;
+}
+
+
+public int getRow() {
+	return Row;
+}
+public int getColumn() {
+	return Column;
+}
+
+public boolean isValidMove(int Row, int Column) {
+	if (this.Row != Row && this.Column != Column) {
+		return false;
+}
+if (this.Row == Row) {
+	if (Column < this.Column) {
+		for (int i = this.Column - 1; i > Column; i--) {
+			if (ChessPiece.InUse(Row, i) != null) {
+				return false;
+}
+}
+} else {
+	for (int i = this.Column + 1; i < Column; i++) {
+		if (ChessPiece.InUse(Row, i) != null) {
+			return false;
+}
+}
+}
+} else {
+	if (this.Row > Row) {
+		for (int i = this.Row - 1; i > Row; i--) {
+			if (ChessPiece.InUse(i, Column) != null) {
+				return false;
+}
+}
+}
+	else {
+	for (int i = this.Row + 1; i < Row; i++) {
+		if (ChessPiece.InUse(i, Column) != null) {
+			return false;
+}
+}
+}
+}
+ChessPiece Piece = ChessPiece.InUse(Row, Column);
+if (Piece != null) {
+	return !Piece.getColor().equals(getColor());
+}
+return true;
+}
+}
