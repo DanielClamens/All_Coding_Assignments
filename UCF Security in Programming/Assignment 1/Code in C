@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+int main(int argc, char *argv[]) {
+
+	FILE * keyFile = fopen(argv[1], "r");
+	FILE * plainFile = fopen(argv[2], "r");
+
+    int KeyF = getc(keyFile);
+    int PlaintextF = getc(plainFile);
+
+    char Key[513];
+    int i = 0;
+    while (KeyF != EOF) {
+        if (isalpha(KeyF)) {
+            Key[i] = tolower(KeyF);
+            i++;
+        }
+    }
+
+    char Plaintext[513];
+    int k = 0;
+    while (PlaintextF != EOF) {
+        if (isalpha(PlaintextF)) {
+            Plaintext[k] = tolower(PlaintextF);
+            k++;
+        }
+    }
+    int PlainLen = strlen(Plaintext);
+    if (PlainLen < 512) {
+        for (int i = PlainLen; i < 512; i++) {
+            Plaintext[i] = 'x';
+        }
+    }
+    char newKey[PlainLen], Cipher[PlainLen];
+
+    int KeyLen = strlen(Key);
+    for (int i = 0, j = 0; i < PlainLen; i++) {
+        if (j == KeyLen) {
+            j = 0;
+        }
+        newKey[i] = Key[j];
+        j++;
+    }
+    for (int i = 0; i < PlainLen; i++) {
+        Cipher[i] = (((Plaintext[i] - 'a') + (newKey[i] - 'a')) % 26 + 'a');
+    }
+    int index = 0;
+    printf("\n");
+    while (index < PlainLen) {
+        printf("%c", Cipher[index]);
+        index++;
+    }
+    printf("\n");
+}
