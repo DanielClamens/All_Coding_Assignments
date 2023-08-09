@@ -1,0 +1,122 @@
+//Daniel Clamens, Assignment 2: Objects, Object Oriented Programming, Due Sept. 16, 2022
+
+
+import java.util.Scanner;
+
+public class Bank {
+    private static Account[] Accounts = new Account[5];
+
+    public static void main(String[] args) {
+        int Choice = 0;
+        int i;
+        int x = 0;
+        Scanner scan = new Scanner(System.in);
+
+        System.out.println("Welcome to Knightro Banking:");
+        
+        while (x != 1){
+        
+            for (i = 0; i < 5; i++)
+                if (Accounts[i] == null)
+                    System.out.println((i + 1) + ". Empty");
+                else
+                    System.out.println((i + 1) + ". " + Accounts[i].getName());
+            System.out.println("6. Exit the program\n");
+            System.out.println("What would you like to do?\n");
+            
+            Choice = scan.nextInt();
+            	
+            if (Choice != 6) {
+            
+            if (Accounts[Choice - 1] == null) {
+
+                    System.out.println("What is the name of the new account:");
+                    String name = scan.next();
+                    System.out.println("What is the interest rate?");
+                    double rate = scan.nextDouble();
+
+                    Accounts[Choice - 1] = new Account(name, rate);
+                } else {
+                    
+                    System.out.println("What would you like to do?\n");
+                    System.out.println("1. Deposit Funds");
+                    System.out.println("2. Withdraw Funds");
+                    System.out.println("3. Check Balance");
+                    System.out.println("4. Calculate Interest");
+                    System.out.println("5. Close Account");
+
+                    System.out.println("What would you like to do?");
+                    
+                    int SecondChoice = scan.nextInt();
+
+
+                    switch(SecondChoice) {
+
+                    case 1:{
+            System.out.println("How much money would you like to deposit?");
+                        double amount = scan.nextDouble();
+
+
+                        if (Accounts[Choice - 1].deposit(amount)){
+                            System.out.println("You have added $" + String.format("%.2f", amount));
+                            System.out.printf("Your current balance is $%.2f\n", Accounts[Choice - 1].getBalance());
+                        }
+                        
+                        else {
+                            System.out.println("This is an invalid amount");
+                    }
+                    }
+                    break;
+                    
+                    case 2:{
+
+            System.out.println("How much money would you like to withdraw?");
+                        double amount = scan.nextDouble();
+
+
+                        if (Accounts[Choice - 1].withdraw(amount)) {
+                            System.out.println("You have withdrawn $" + String.format("%.2f", amount));
+                        	System.out.printf("Your current balance is $%.2f\n", Accounts[Choice - 1].getBalance());
+                        }
+                        else
+                            System.out.println("This is an invalid amount");
+                    }
+                    break;
+                    
+                    case 3: {
+                        System.out.printf("Account Balance of %s: $%.2f\n", Accounts[Choice - 1].getName(), Accounts[Choice - 1].getBalance());
+                    } 
+                    break;
+                    
+                    case 4: {
+                        System.out.println("Enter the number of months:");
+                        int months = scan.nextInt();
+
+                        Accounts[Choice - 1].calcInterest(months); //That's not how banks should work!!! Infinite Money Glitch!!
+                        
+                    break;
+                    }
+                    case 5: { 
+         
+System.out.printf("%s's account is closed!\n", Accounts[Choice - 1].getName());
+                        Accounts[Choice - 1] = null;
+                    }
+                    break;
+                    
+                    case 6: {
+                    	System.out.println("Goodbye!\n");
+                    }
+                    default: {
+                System.out.println("Invalid choice!");
+                    }
+                    }
+    } 
+}
+            else if (Choice == 6) {
+            	System.out.println("Goodbye!\n");
+            	x += 1;
+            	scan.close();
+            }
+        }
+        }
+    }
