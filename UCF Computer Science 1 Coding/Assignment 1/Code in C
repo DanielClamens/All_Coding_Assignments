@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Section {
+    struct Cage * cages;
+    int NumOfCages;
+  }* sections;
+  //Setup the Structs for the program
+  struct Cage {
+    char animal[1000 + 1];
+  }
+  cage;
+
+
+int main() {
+
+  int NumOfSections, UserChoice, SectionsInZoo, CagesInSection;
+  char animalName[1000 + 1];
+
+  scanf("%d", &NumOfSections); //Reads users initial input for number of sections to create
+
+  sections = malloc(sizeof(struct Section) * NumOfSections); //memory allocation for struct Section
+
+  for (int i = 0; i < NumOfSections; i++) { //Zeroing out variables.
+    sections[i].cages = NULL;
+    sections[i].NumOfCages = 0;
+  }
+
+  while (UserChoice != 4) { //Creates a loop for the switch that ends when user inputs 4.
+    scanf("%d", & UserChoice);
+    switch (UserChoice) {
+    case 1:
+      scanf("%d %d", & SectionsInZoo, & CagesInSection);
+      if (SectionsInZoo > NumOfSections) continue; //Ignores misinput
+
+      sections[SectionsInZoo - 1].cages = realloc(sections[SectionsInZoo - 1].cages, sizeof(struct Cage) * CagesInSection); // Allocate space for required cages
+
+      for (int i = sections[SectionsInZoo - 1].NumOfCages; i < CagesInSection; i++)
+        strcpy(sections[SectionsInZoo - 1].cages[i].animal, "No animal found."); // Initialize all animal strings to "No animal found." in order to have a default(to be printed if not initialized)
+      sections[SectionsInZoo - 1].NumOfCages = CagesInSection;
+      break;
+
+    case 2:
+      scanf("%d %d", & SectionsInZoo, & CagesInSection);
+      if (SectionsInZoo > NumOfSections) continue; //Ignores misinput
+      if (CagesInSection > sections[SectionsInZoo - 1].NumOfCages) continue;
+      scanf("%s", sections[SectionsInZoo - 1].cages[CagesInSection - 1].animal);
+      break;
+
+    case 3:
+      scanf("%d %d", & SectionsInZoo, & CagesInSection);
+      if ((CagesInSection > sections[SectionsInZoo - 1].NumOfCages) || (SectionsInZoo > NumOfSections)) { // //Ignores misinput
+        printf("No animal found.\n");
+        continue;
+      }
+      printf("%s\n", sections[SectionsInZoo - 1].cages[CagesInSection - 1].animal);
+      break;
+    }
+  }
+  for (int i = 0; i < NumOfSections; i++) free(sections[i].cages); //Free's all allocated memory to avoid leaks.
+  free(sections);
+
+  return 0;
+}
