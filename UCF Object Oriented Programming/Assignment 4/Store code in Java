@@ -1,0 +1,69 @@
+//Daniel Clamens, 10/21/22, Object Oriented Programming, Assignment 4: File I/O & Linked Lists
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Store
+{
+    static LinkedList<Customer> checkout=new LinkedList<Customer>();
+    static LinkedList<Customer> returns =new LinkedList<Customer>();
+    
+	public static void main(String[] args) {
+		
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Enter a valid file name: ");
+		String file = scan.next();
+		String st;
+		try 
+		{ 
+		    
+           BufferedReader br = new BufferedReader(new FileReader(file)); 
+           int n = Integer.parseInt(br.readLine());
+           
+           
+            for(int i = 0; i < n; i++){  
+            	
+            	st = br.readLine();
+                
+            	String str[]= st.toString().split(" ");
+                
+                checkout.add(new Customer(str[0],Boolean.parseBoolean(str[1])));
+                
+            }  
+            br.close();
+            
+        }  
+        catch(IOException e)  
+        {  
+            e.printStackTrace();  
+        }  
+		
+        while(checkout.size() > 0 || returns.size() > 0){
+            for(int i = 0; i < 2; i++){
+                if(checkout.size() < 1){
+                    break;
+                }   
+                boolean val = checkout.getFirst().getbusiness();
+                if(val == true){
+                    System.out.println(checkout.getFirst().getName()+" was forwarded to the return line.");
+                    returns.add(checkout.getFirst());
+                }
+                else{
+                    System.out.println(checkout.getFirst().getName()+" checked out.");
+                }
+                checkout.removeFirst();
+            
+            }
+            
+            if(returns.size()<1){
+                break;
+            }
+            System.out.println(returns.getFirst().getName()+" returned an item.");
+            returns.removeFirst();
+        }
+        scan.close();
+	}
+}
