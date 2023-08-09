@@ -1,0 +1,79 @@
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+  int NumOfTowers, ParkLength, ShadeRequired;
+  scanf("%d%d%d", & NumOfTowers, & ParkLength, & ShadeRequired);
+
+  double TowerHeight[NumOfTowers], TowerPosition[NumOfTowers];
+  for (int i = 0; i < NumOfTowers; ++i)
+    scanf("%lf%lf", & TowerPosition[i], & TowerHeight[i]);
+
+  int low = 0, high = 90000000;
+  double Angle1 = 0;
+
+  while (low <= high) {
+    double mid = (low + high) / 2;
+
+    double Shadow[NumOfTowers];
+
+    for (int i = 0; i < NumOfTowers; ++i) {
+      Shadow[i] =
+        TowerPosition[i] - (TowerHeight[i] / tan(( mid * 3.14159265358) / (180.0 * 1000000.0)));
+      if (Shadow[i] < 0)
+        Shadow[i] = 0;
+    }
+
+    double ShadowLength = 0, start = TowerPosition[NumOfTowers - 1], end = Shadow[NumOfTowers - 1];
+    for (int i = NumOfTowers - 2; i >= 0; --i) {
+      if (TowerPosition[i] < end) {
+        ShadowLength += (start - end);
+        start = TowerPosition[i];
+        end = Shadow[i];
+      } else {
+        end = Shadow[i];
+      }
+    }
+
+    ShadowLength += (start - end);
+    if (ParkLength * ShadeRequired <= ShadowLength * 100) {
+      low = mid + 1;
+      Angle1 = mid;
+    } else {
+      high = mid - 1;
+    }
+  }
+  printf("%.5lf ", Angle1 / 1000000);
+
+  low = 90000000, high = 180 * 1000000;
+  double Angle2 = 180;
+
+  while (low <= high) {
+    double mid = (low + high) / 2;
+    double Shadow[NumOfTowers];
+    for (int i = 0; i < NumOfTowers; ++i) {
+      Shadow[i] = TowerPosition[i] - (TowerHeight[i] / tan(( mid * 3.14159265358) / (180.0 * 1000000.0)));
+      if (Shadow[i] > ParkLength)
+        Shadow[i] = ParkLength;
+    }
+    double ShadowLength = 0, start = TowerPosition[0], end = Shadow[0];
+    for (int i = 1; i < NumOfTowers; ++i) {
+      if (TowerPosition[i] > end) {
+        ShadowLength += (end - start);
+        start = TowerPosition[i];
+        end = Shadow[i];
+      } else {
+        end = Shadow[i];
+      }
+    }
+    ShadowLength += (end - start);
+    if (ParkLength * ShadeRequired <= ShadowLength * 100) {
+      high = mid - 1;
+      Angle2 = mid;
+    } else {
+      low = mid + 1;
+    }
+  }
+  printf("%.5lf", Angle2 / 1000000.0);
+}
