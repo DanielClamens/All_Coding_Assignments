@@ -1,0 +1,103 @@
+import java.util.Scanner;
+public class Halloween {
+  private static int count = 0;
+  public static String sticker(String Input) {
+    String Sticker[] = {
+      "PUMPKIN",
+      "BAT",
+      "WITCH",
+      "VAMPIRE",
+      "PUMPKIN"
+    };
+    for (int i = 0; i < Input.length(); i++){  
+        
+    int Index = Input.indexOf("$");
+    if (Index != -1){
+        String temp = (Sticker[count]);
+        count++;
+        String temp2 = temp + (Sticker[count]);
+        count++;
+        Input = Input.substring(0, Index) + temp2 + Input.substring(Index + 1);
+    if (count >= 4){
+        count = 0; }
+    }
+    }
+    return Input;
+  }
+    public static String stickerElse(String Input) {
+    String Sticker[] = {
+      "PUMPKIN",
+      "BAT",
+      "WITCH",
+      "VAMPIRE",
+      "PUMPKIN"
+    };
+ for (int i = 0; i < Input.length(); i++){  
+        
+    int Index = Input.indexOf("$");
+    if (Index != -1){
+        String temp = (Sticker[count]);
+        count++;
+        Input = Input.substring(0, Index) + temp + Input.substring(Index + 1);
+    if (count >= 4){
+        count = 0; }
+    }
+    }
+    return Input;
+  }
+
+public static String sticker(String Input, Boolean Validity) {
+    
+    if (Validity == true) {
+
+        if (Input.contains("$")) {
+        Input = (" \n");
+      }
+    }
+      if (Validity == false) {
+         Input = stickerElse(Input);
+        }
+      return Input;
+    }
+    
+    
+  public static void main(String[] args) {
+    Scanner scan = new Scanner(System.in);
+    String DataType = " ";
+    String Message = " ";
+    boolean MessageValidity;
+    int x = 0;
+
+    while (x != 1) {
+
+      System.out.println("What is the data type?\n");
+      DataType = scan.nextLine();
+      DataType = DataType.toLowerCase();
+
+      if (DataType.equals("name")) { //2 Stickers
+        System.out.println("What is the message?\n");
+        Message = scan.nextLine();
+        Message = sticker(Message);
+    
+      System.out.println(Message);
+      } else if ((DataType.equals("date")) || (DataType.equals("slogan"))) {
+
+      System.out.println("What is the message?\n");
+      Message = scan.nextLine();
+
+      if (Message.contains("2022") || Message.contains("2023")) {
+        MessageValidity = true;
+      } else {
+        MessageValidity = false;
+      }
+        Message = sticker(Message, MessageValidity);
+        System.out.println(Message);
+      }
+
+    if (DataType.equals("exit")) {
+      x = 1;
+      scan.close();
+    }
+      }
+  }
+}
